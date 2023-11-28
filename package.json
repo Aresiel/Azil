@@ -1,0 +1,20 @@
+{
+  "name": "azil",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node .\\dist\\index.js"
+  },
+  "author": "Aresiel",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "bing-translate-api": "^2.10.0",
+    "discord.js": "^14.14.1",
+    "typescript": "^5.3.2"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.3"
+  }
+}
