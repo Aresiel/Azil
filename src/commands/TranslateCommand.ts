@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message, MessageResolvable, MessageType } from "discord.js";
 import { Command } from "../Command.js";
 import { translate } from "bing-translate-api";
 
@@ -16,7 +16,18 @@ class TranslateCommand extends Command {
 
         if(/>[A-Za-z-]+/.test(args[0])) { // Language is given
             options_string = args[0].toLowerCase()
-            text = args.splice(1).join(" ")
+
+            if(args.splice(1).length > 0) text = args.splice(1).join(" ")
+            else {
+                if(msg.type === MessageType.Reply && msg.reference !== null) {
+                    let replied_msg = await msg.channel.messages.fetch(msg.reference.messageId as MessageResolvable)
+                    text = replied_msg.content
+                } else {
+                    return await msg.reply("Invalid usage.")
+                }
+            }
+
+            
 
             if (options_string.split(">").length !== 2) return await msg.reply("Invalid usage.")
 
@@ -34,6 +45,8 @@ class TranslateCommand extends Command {
         if(!this.validLangCode(lang_to)) return await msg.reply(`Invalid language, ${lang_to} is not supported.`)
 
         let translation = await translate(text, lang_from, lang_to)
+
+        if(translation === null || translation === undefined) return await msg.reply("Translation failed.")
 
         await msg.reply(`${this.langName(translation.language.from.toLowerCase())} > ${this.langName(translation.language.to.toLowerCase())}\n> ${translation.translation}`)
     }
