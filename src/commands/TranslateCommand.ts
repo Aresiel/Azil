@@ -17,8 +17,9 @@ class TranslateCommand extends Command {
         if(/>[A-Za-z-]+/.test(args[0])) { // Language is given
             options_string = args[0].toLowerCase()
 
-            if(args.splice(1).length > 0) text = args.splice(1).join(" ")
-            else {
+            if(args.slice(1).length > 0) { 
+                text = args.slice(1).join(" ")
+            } else {
                 if(msg.type === MessageType.Reply && msg.reference !== null) {
                     let replied_msg = await msg.channel.messages.fetch(msg.reference.messageId as MessageResolvable)
                     text = replied_msg.content
@@ -26,7 +27,6 @@ class TranslateCommand extends Command {
                     return await msg.reply("Invalid usage.")
                 }
             }
-
             
 
             if (options_string.split(">").length !== 2) return await msg.reply("Invalid usage.")

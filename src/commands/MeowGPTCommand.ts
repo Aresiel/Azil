@@ -5,7 +5,7 @@ class MeowGPTCommand extends Command {
     override trigger_words = ["what", "how", "why", "where", "when", "who", "is"];
     
     override async execute(msg: Message<boolean>, trigger_word: string, args: [string]) {
-        if(!msg.content.endsWith("?")) return
+        if(!msg.content.includes("?")) return
         await msg.reply(this.meowGPTReponse())
     }
 
