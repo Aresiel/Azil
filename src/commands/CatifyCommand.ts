@@ -4,7 +4,7 @@ import { Command } from "../Command.js";
 class CatifyCommand extends Command {
     override trigger_words = ["catify"];
     
-    override async execute(msg: Message<boolean>, trigger_word: string, args: [string]) {
+    override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
 
         let text
 

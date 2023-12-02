@@ -6,6 +6,7 @@ import { MeowGPTCommand } from "./commands/MeowGPTCommand.js"
 import { SayCommand } from "./commands/SayCommand.js"
 import { TranslateCommand } from "./commands/TranslateCommand.js"
 import { CatifyCommand } from "./commands/CatifyCommand.js"
+import { WeatherCommand } from "./commands/WeatherCommand.js"
 
 const client  = new Client({
     intents: [
@@ -31,7 +32,8 @@ let command_handler = new CommandHandler(prefix, [
     new MeowGPTCommand,
     new SayCommand,
     new TranslateCommand,
-    new CatifyCommand
+    new CatifyCommand,
+    new WeatherCommand
 ])
 client.on(Events.MessageCreate, msg => command_handler.handleMessage(command_handler, msg))
 console.log(`Registered command handler with prefix "${prefix}" and command${command_handler.commands.length == 1 ? "" : "s"} ${command_handler.commands.map(cmd => cmd.constructor.name).join(", ")}`)

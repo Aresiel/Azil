@@ -6,7 +6,7 @@ class TranslateCommand extends Command {
     override trigger_words = ["tl", "translate"];
     override bot_can_trigger = false
 
-    override async execute(msg: Message<boolean>, trigger_word: string, args: [string]) {
+    override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
         if (args.length < 1) return await msg.reply("Invalid usage.")
 
         let options_string: string
