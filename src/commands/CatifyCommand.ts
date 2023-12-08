@@ -2,7 +2,7 @@ import { Message, MessageResolvable, MessageType } from "discord.js";
 import { Command } from "../Command.js";
 
 class CatifyCommand extends Command {
-    override trigger_words = ["catify"];
+    override trigger_words = ["catify", "meowify"];
     
     override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
 
