@@ -6,7 +6,9 @@ abstract class Command {
     channelType_blacklist: ChannelType[] | null = null
     owner_only: boolean = false
     bot_can_trigger: boolean = true
-    cooldown: number = 0
+    global_cooldown: number = 0
+    individual_cooldown: number = 0
+    abstract name: string
     
     abstract execute(msg: Message, trigger_word: string, args: string[]): void
 }

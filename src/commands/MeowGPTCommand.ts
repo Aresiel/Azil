@@ -3,6 +3,7 @@ import { Command } from "../Command.js";
 
 class MeowGPTCommand extends Command {
     override trigger_words = ["what", "how", "why", "where", "when", "who", "is"];
+    override name = "MeowGPT"
     
     override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
         if(!msg.content.includes("?")) return

@@ -4,8 +4,9 @@ import Weather from "@tinoschroeter/weather-js";
 
 class WeatherCommand extends Command {
     override trigger_words = ["weather"];
-    override cooldown: number  = 4;
+    override global_cooldown: number  = 4;
     override bot_can_trigger: boolean = false;
+    override name = "Weather"
 
     weather = new Weather()
     
