@@ -4,7 +4,8 @@ import { CommandHandler } from "./CommandHandler.js"
 import { MeowCommand } from "./commands/MeowCommand.js"
 import { MeowGPTCommand } from "./commands/MeowGPTCommand.js"
 import { SayCommand } from "./commands/SayCommand.js"
-import { TranslateCommand } from "./commands/TranslateCommand.js"
+import { BingTranslateCommand } from "./commands/BingTranslateCommand.js"
+import { GoogleTranslateCommand } from "./commands/GoogleTranslateCommand.js"
 import { CatifyCommand } from "./commands/CatifyCommand.js"
 import { WeatherCommand } from "./commands/WeatherCommand.js"
 
@@ -31,7 +32,7 @@ let command_handler = new CommandHandler(prefix, [
     new MeowCommand,
     new MeowGPTCommand,
     new SayCommand,
-    new TranslateCommand,
+    new GoogleTranslateCommand,
     new CatifyCommand,
     new WeatherCommand
 ])

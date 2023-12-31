@@ -1,11 +1,12 @@
 import { Message, MessageResolvable, MessageType } from "discord.js";
 import { Command } from "../Command.js";
-import { translate } from "bing-translate-api";
+import translate from "node-google-translate-skidz";
 
-class TranslateCommand extends Command {
+class GoogleTranslateCommand extends Command {
     override trigger_words = ["tl", "translate"];
     override bot_can_trigger = false
     override name = "Translate"
+    override global_cooldown = 4
 
     override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
         if (args.length < 1) return await msg.reply("Invalid usage.")
@@ -34,10 +35,10 @@ class TranslateCommand extends Command {
 
             lang_from = options_string.split(">")[0].trim()
             lang_to = options_string.split(">")[1].trim()
-            if (lang_from === "") lang_from = "auto-detect"
+            if (lang_from === "") lang_from = "auto"
             if(lang_to === "") lang_to = "en"
         } else {
-            lang_from = "auto-detect"
+            lang_from = "auto"
             lang_to = "en"
             text = args.join(" ")
         }
@@ -46,10 +47,11 @@ class TranslateCommand extends Command {
         if(!this.validLangCode(lang_to)) return await msg.reply(`Invalid language, ${lang_to} is not supported.`)
 
         let translation = await translate(text, lang_from, lang_to)
+        console.log(translation)
 
         if(translation === null || translation === undefined) return await msg.reply("Translation failed.")
 
-        await msg.reply(`${this.langName(translation.language.from.toLowerCase())} > ${this.langName(translation.language.to.toLowerCase())}\n> ${translation.translation}`)
+        await msg.reply(`${this.langName(translation.src.toLowerCase())} > ${this.langName(lang_to.toLowerCase())}\n> ${translation.translation}`)
     }
 
     validLangCode(code: string): boolean {
@@ -62,140 +64,143 @@ class TranslateCommand extends Command {
 
 }
 
-export {TranslateCommand}
+export {GoogleTranslateCommand}
 
 let languageMap = JSON.parse(`{
-    "auto-detect": "Auto Detect",
+    "auto": "Auto Detect",
     "af": "Afrikaans",
     "sq": "Albanian",
     "am": "Amharic",
     "ar": "Arabic",
     "hy": "Armenian",
     "as": "Assamese",
+    "ay": "Aymara",
     "az": "Azerbaijani",
-    "bn": "Bangla",
-    "ba": "Bashkir",
+    "bm": "Bambara",
     "eu": "Basque",
+    "be": "Belarusian",
+    "bn": "Bengali",
     "bho": "Bhojpuri",
-    "brx": "Bodo",
     "bs": "Bosnian",
     "bg": "Bulgarian",
-    "yue": "Cantonese (Traditional)",
     "ca": "Catalan",
-    "lzh": "Chinese (Literary)",
-    "zh-hans": "Chinese Simplified",
-    "zh-hant": "Chinese Traditional",
+    "ceb": "Cebuano",
+    "zh-cn": "Chinese (Simplified)",
+    "zh": "Chinese (Simplified)",
+    "zh-tw": "Chinese (Traditional)",
+    "co": "Corsican",
     "hr": "Croatian",
     "cs": "Czech",
     "da": "Danish",
-    "prs": "Dari",
-    "dv": "Divehi",
+    "dv": "Dhivehi",
     "doi": "Dogri",
     "nl": "Dutch",
     "en": "English",
+    "eo": "Esperanto",
     "et": "Estonian",
-    "fo": "Faroese",
-    "fj": "Fijian",
-    "fil": "Filipino",
+    "ee": "Ewe",
+    "fil": "Filipino (Tagalog)",
     "fi": "Finnish",
     "fr": "French",
-    "fr-ca": "French (Canada)",
+    "fy": "Frisian",
     "gl": "Galician",
-    "lug": "Ganda",
     "ka": "Georgian",
     "de": "German",
     "el": "Greek",
+    "gn": "Guarani",
     "gu": "Gujarati",
     "ht": "Haitian Creole",
     "ha": "Hausa",
-    "he": "Hebrew",
+    "haw": "Hawaiian",
+    "he or iw": "Hebrew",
     "hi": "Hindi",
-    "mww": "Hmong Daw",
+    "hmn": "Hmong",
     "hu": "Hungarian",
     "is": "Icelandic",
     "ig": "Igbo",
+    "ilo": "Ilocano",
     "id": "Indonesian",
-    "ikt": "Inuinnaqtun",
-    "iu": "Inuktitut",
-    "iu-latn": "Inuktitut (Latin)",
     "ga": "Irish",
     "it": "Italian",
     "ja": "Japanese",
+    "jv or jw": "Javanese",
     "kn": "Kannada",
-    "ks": "Kashmiri",
     "kk": "Kazakh",
     "km": "Khmer",
     "rw": "Kinyarwanda",
-    "tlh-latn": "Klingon (Latin)",
     "gom": "Konkani",
     "ko": "Korean",
-    "ku": "Kurdish (Central)",
-    "kmr": "Kurdish (Northern)",
+    "kri": "Krio",
+    "ku": "Kurdish",
+    "ckb": "Kurdish (Sorani)",
     "ky": "Kyrgyz",
     "lo": "Lao",
+    "la": "Latin",
     "lv": "Latvian",
     "ln": "Lingala",
     "lt": "Lithuanian",
-    "dsb": "Lower Sorbian",
+    "lg": "Luganda",
+    "lb": "Luxembourgish",
     "mk": "Macedonian",
     "mai": "Maithili",
     "mg": "Malagasy",
     "ms": "Malay",
     "ml": "Malayalam",
     "mt": "Maltese",
+    "mi": "Maori",
     "mr": "Marathi",
-    "mn-cyrl": "Mongolian (Cyrillic)",
-    "mn-mong": "Mongolian (Traditional)",
+    "mni-mtei": "Meiteilon (Manipuri)",
+    "lus": "Mizo",
+    "mn": "Mongolian",
     "my": "Myanmar (Burmese)",
-    "mi": "Māori",
     "ne": "Nepali",
-    "nb": "Norwegian",
-    "nya": "Nyanja",
-    "or": "Odia",
+    "no": "Norwegian",
+    "ny": "Nyanja (Chichewa)",
+    "or": "Odia (Oriya)",
+    "om": "Oromo",
     "ps": "Pashto",
     "fa": "Persian",
     "pl": "Polish",
-    "pt": "Portuguese (Brazil)",
-    "pt-pt": "Portuguese (Portugal)",
+    "pt": "Portuguese (Portugal, Brazil)",
     "pa": "Punjabi",
-    "otq": "Querétaro Otomi",
+    "qu": "Quechua",
     "ro": "Romanian",
-    "run": "Rundi",
     "ru": "Russian",
     "sm": "Samoan",
-    "sr-cyrl": "Serbian (Cyrillic)",
-    "sr-latn": "Serbian (Latin)",
+    "sa": "Sanskrit",
+    "gd": "Scots Gaelic",
+    "nso": "Sepedi",
+    "sr": "Serbian",
     "st": "Sesotho",
-    "nso": "Sesotho sa Leboa",
-    "tn": "Setswana",
     "sn": "Shona",
     "sd": "Sindhi",
-    "si": "Sinhala",
+    "si": "Sinhala (Sinhalese)",
     "sk": "Slovak",
     "sl": "Slovenian",
     "so": "Somali",
     "es": "Spanish",
+    "su": "Sundanese",
     "sw": "Swahili",
     "sv": "Swedish",
-    "ty": "Tahitian",
+    "tl": "Tagalog (Filipino)",
+    "tg": "Tajik",
     "ta": "Tamil",
     "tt": "Tatar",
     "te": "Telugu",
     "th": "Thai",
-    "bo": "Tibetan",
     "ti": "Tigrinya",
-    "to": "Tongan",
+    "ts": "Tsonga",
     "tr": "Turkish",
     "tk": "Turkmen",
+    "ak": "Twi (Akan)",
     "uk": "Ukrainian",
-    "hsb": "Upper Sorbian",
     "ur": "Urdu",
     "ug": "Uyghur",
-    "uz": "Uzbek (Latin)",
+    "uz": "Uzbek",
     "vi": "Vietnamese",
     "cy": "Welsh",
     "xh": "Xhosa",
+    "yi": "Yiddish",
     "yo": "Yoruba",
-    "yua": "Yucatec Maya",
     "zu": "Zulu"
 }`)
