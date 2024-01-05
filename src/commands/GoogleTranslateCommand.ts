@@ -9,47 +9,56 @@ class GoogleTranslateCommand extends Command {
     override global_cooldown = 4
 
     override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
-        if (args.length < 1) return await msg.reply("Invalid usage.")
 
         let options_string: string
         let text: string
         let lang_from: string
         let lang_to: string
 
-        if(/>[A-Za-z-]+/.test(args[0])) { // Language is given
-            options_string = args[0].toLowerCase()
+        options_string = args[0] !== undefined ? args[0].toLowerCase() : ""
 
-            if(args.slice(1).length > 0) { 
-                text = args.slice(1).join(" ")
+        if (msg.type === MessageType.Reply && msg.reference !== null) {
+            if (this.isOptionString(options_string) && args.length === 1 && msg.reference !== null) {
+                let replied_msg = await msg.channel.messages.fetch(msg.reference.messageId as MessageResolvable)
+                text = replied_msg.content
+
+                lang_from = this.parseOptionString(options_string).from
+                lang_to = this.parseOptionString(options_string).to
+
+            } else if (args.length === 0 && msg.reference !== null) {
+                let replied_msg = await msg.channel.messages.fetch(msg.reference.messageId as MessageResolvable)
+                text = replied_msg.content
+
+                lang_from = this.parseOptionString(">").from
+                lang_to = this.parseOptionString(">").to
             } else {
-                if(msg.type === MessageType.Reply && msg.reference !== null) {
-                    let replied_msg = await msg.channel.messages.fetch(msg.reference.messageId as MessageResolvable)
-                    text = replied_msg.content
-                } else {
-                    return await msg.reply("Invalid usage.")
-                }
+                return await msg.reply("Invalid usage.")
             }
-            
 
-            if (options_string.split(">").length !== 2) return await msg.reply("Invalid usage.")
 
-            lang_from = options_string.split(">")[0].trim()
-            lang_to = options_string.split(">")[1].trim()
-            if (lang_from === "") lang_from = "auto"
-            if(lang_to === "") lang_to = "en"
         } else {
-            lang_from = "auto"
-            lang_to = "en"
-            text = args.join(" ")
+            if (this.isOptionString(options_string) && args.length > 1) {
+                text = args.slice(1).join(" ")
+
+                lang_from = this.parseOptionString(options_string).from
+                lang_to = this.parseOptionString(options_string).to
+            } else if (args.length > 0) {
+                text = args.join(" ")
+
+                lang_from = this.parseOptionString(">").from
+                lang_to = this.parseOptionString(">").to
+            } else {
+                return await msg.reply("Invalid usage.")
+            }
         }
 
-        if(!this.validLangCode(lang_from)) return await msg.reply(`Invalid language, ${lang_from} is not supported.`)
-        if(!this.validLangCode(lang_to)) return await msg.reply(`Invalid language, ${lang_to} is not supported.`)
+
+        if (!this.validLangCode(lang_from)) return await msg.reply(`Invalid language, ${lang_from} is not supported.`)
+        if (!this.validLangCode(lang_to)) return await msg.reply(`Invalid language, ${lang_to} is not supported.`)
 
         let translation = await translate(text, lang_from, lang_to)
-        console.log(translation)
 
-        if(translation === null || translation === undefined) return await msg.reply("Translation failed.")
+        if (translation === null || translation === undefined) return await msg.reply("Translation failed.")
 
         await msg.reply(`${this.langName(translation.src.toLowerCase())} > ${this.langName(lang_to.toLowerCase())}\n> ${translation.translation}`)
     }
@@ -57,14 +66,28 @@ class GoogleTranslateCommand extends Command {
     validLangCode(code: string): boolean {
         return Object.keys(languageMap).includes(code)
     }
-    
-    langName(code: string){
+
+    langName(code: string) {
         return languageMap[code]
+    }
+
+    isOptionString(string: string) {
+        return />[A-Za-z-]+/.test(string)
+    }
+
+    parseOptionString(string: string) {
+        let to_cand = string.split(">")[1]
+        let from_cand = string.split(">")[0]
+
+        return {
+            to: to_cand !== "" ? to_cand : "en",
+            from: from_cand !== "" ? from_cand : "auto"
+        }
     }
 
 }
 
-export {GoogleTranslateCommand}
+export { GoogleTranslateCommand }
 
 let languageMap = JSON.parse(`{
     "auto": "Auto Detect",
