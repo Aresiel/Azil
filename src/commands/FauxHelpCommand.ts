@@ -4,6 +4,7 @@ import { Command } from "../Command.js";
 class FauxHelpCommand extends Command {
     override trigger_words = ["help"];
     override name = "Help"
+    override individual_cooldown = 5;
     
     override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
         await msg.reply({
