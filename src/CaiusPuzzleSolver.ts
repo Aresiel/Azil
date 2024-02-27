@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
-
+import { python } from "./config.js"
 import { exec } from "child_process";
+
 
 
 async function solvePuzzle(msg: Message){
@@ -38,7 +39,7 @@ function getTargetNumber(msg: Message): number {
 
 async function solve(numbers: number[], target: number): Promise<string> {
     return new Promise((resolve, reject) => {
-        exec(`python ./src/solvePuzzle.py ${target} ${numbers.join(" ")}`, (e, stdout, stderr) => {
+        exec(`${python} ./src/solvePuzzle.py ${target} ${numbers.join(" ")}`, (e, stdout, stderr) => {
             if(stderr.length != 0) reject(stderr);
             resolve(stdout);
         })
