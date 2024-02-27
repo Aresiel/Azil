@@ -12,7 +12,10 @@ async function solvePuzzle(msg: Message){
 
     let solution = await solve(numbers, target_number);
 
-    msg.reply(`${solution}`);
+    msg.channel.sendTyping()
+    setTimeout(() => {
+        msg.reply(`${solution}`);
+    }, 3000)
 }
 
 function isPuzzleMessage(msg: Message){
