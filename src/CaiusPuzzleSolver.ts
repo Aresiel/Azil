@@ -14,7 +14,11 @@ async function solvePuzzle(msg: Message){
 
     msg.channel.sendTyping()
     setTimeout(() => {
-        msg.reply(`${solution.replaceAll("*", "\\*")}`);
+        if(Math.random() > 0.65){
+            msg.reply(`${solution.replaceAll("*", "\\*")}`);
+        } else {-
+            msg.reply(`||${solution.replaceAll("*", "\\*")}||`);
+        }
     }, 3000)
 }
 
