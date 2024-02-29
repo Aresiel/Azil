@@ -14,7 +14,7 @@ async function solvePuzzle(msg: Message){
 
     msg.channel.sendTyping()
     setTimeout(() => {
-        msg.reply(`${solution}`);
+        msg.reply(`${solution.replaceAll("*", "\\*")}`);
     }, 3000)
 }
 
@@ -24,7 +24,7 @@ function isPuzzleMessage(msg: Message){
 }
 
 function getPuzzleNumbers(msg: Message): number[] {
-    let str = ((/(?<=are )(\d+, )+\d+ and \d+(?=.)/).exec(msg.content) ?? [""])[0]
+    let str = ((/(?<=are )(-?\d+, )+-?\d+ and -?\d+(?=.)/).exec(msg.content) ?? [""])[0]
 
     return str.split("")
         .map(ch => /\d/.test(ch) ? ch : " ")
@@ -35,7 +35,7 @@ function getPuzzleNumbers(msg: Message): number[] {
 }
 
 function getTargetNumber(msg: Message): number {
-    let str = (/(?<=Your goal is )\d+(?=.)/.exec(msg.content) ?? [""])[0]
+    let str = (/(?<=Your goal is )-?\d+(?=.)/.exec(msg.content) ?? [""])[0]
 
     return +str;
 }
