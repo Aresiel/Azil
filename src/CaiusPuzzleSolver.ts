@@ -10,16 +10,24 @@ async function solvePuzzle(msg: Message){
     let numbers = getPuzzleNumbers(msg);
     let target_number = getTargetNumber(msg);
 
-    let solution = await solve(numbers, target_number);
+    try {
+        let solution = await solve(numbers, target_number);
 
-    msg.channel.sendTyping()
-    setTimeout(() => {
-        if(Math.random() > 0.65){
-            msg.reply(`${solution.replaceAll("*", "\\*")}`);
-        } else {-
-            msg.reply(`||${solution.replaceAll("*", "\\*")}||`);
-        }
-    }, 3000)
+        msg.channel.sendTyping()
+        setTimeout(() => {
+            if(Math.random() > 0.65){
+                msg.reply(`${solution.replaceAll("*", "\\*")}`);
+            } else {-
+                msg.reply(`||${solution.replaceAll("*", "\\*")}||`);
+            }
+        }, 3000)
+    } catch(_e) {
+        msg.channel.sendTyping()
+        setTimeout(() => {
+            msg.reply("Good luck everyone! <:");
+        }, 3000)
+    }
+ 
 }
 
 function isPuzzleMessage(msg: Message){
