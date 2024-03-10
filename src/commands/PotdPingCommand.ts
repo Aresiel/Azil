@@ -11,7 +11,7 @@ class PotdPingCommand extends Command { // Temp command, do not use outside STEM
             return
         }
         try {
-            await msg.channel.send("<@&1210378506903748690>")
+            await msg.channel.send("<@&1210302816745169006>")
             await msg.delete()
         } catch (e) {
             
