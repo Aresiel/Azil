@@ -9,7 +9,6 @@ import { GoogleTranslateCommand } from "./commands/GoogleTranslateCommand.js"
 import { CatifyCommand } from "./commands/CatifyCommand.js"
 import { WeatherCommand } from "./commands/WeatherCommand.js"
 import { FauxHelpCommand } from "./commands/FauxHelpCommand.js"
-import { solvePuzzle } from "./CaiusPuzzleSolver.js"
 
 const client  = new Client({
     intents: [
@@ -39,8 +38,6 @@ let command_handler = new CommandHandler(prefix, [
     new WeatherCommand,
     new FauxHelpCommand
 ])
-
-client.on(Events.MessageCreate, msg => solvePuzzle(msg));
 
 client.on(Events.MessageCreate, msg => command_handler.handleMessage(command_handler, msg))
 console.log(`Registered command handler with prefix "${prefix}" and command${command_handler.commands.length == 1 ? "" : "s"} ${command_handler.commands.map(cmd => cmd.constructor.name).join(", ")}`)
