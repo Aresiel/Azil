@@ -60,7 +60,15 @@ class GoogleTranslateCommand extends Command {
 
         if (translation === null || translation === undefined) return await msg.reply("Translation failed.")
 
-        await msg.reply(`${this.langName(translation.src.toLowerCase())} > ${this.langName(lang_to.toLowerCase())}\n> ${translation.translation}`)
+        let message_content: string = `${this.langName(translation.src.toLowerCase())} > ${this.langName(lang_to.toLowerCase())}\n> ${translation.translation}`
+
+        await msg.reply({
+            content: message_content,
+            allowedMentions: {
+                parse: [],
+                repliedUser: true
+            }
+        })
     }
 
     validLangCode(code: string): boolean {
