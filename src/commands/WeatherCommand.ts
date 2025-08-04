@@ -19,7 +19,7 @@ class WeatherCommand extends Command {
         let weather_data = await this.weather.find({
              search: location_text, 
              degreeType: "C", 
-             lang: "en-UK" 
+             lang: "en-UK"
             })
         
         let result = weather_data[0]
