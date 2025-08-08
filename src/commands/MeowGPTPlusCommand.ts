@@ -4,6 +4,7 @@ import { ollama_api_url, ollama_model } from "../config.js"
 import { Ollama } from "ollama";
 
 class MeowGPTPlusCommand extends Command {
+    override bot_can_trigger = false
     override trigger_words = [ // List of verbs not used for other commands
         "what",
         "how",
