@@ -30,8 +30,10 @@ class CommandHandler {
     }
 
     async handleMessage(self: CommandHandler, msg: Message) {
-        if (!msg.content.toLowerCase().startsWith(this.prefix)) return
-        let prefix_stripped = msg.content.substring(self.prefix.length)
+        if (!msg.content.toLowerCase().startsWith(this.prefix) && !msg.content.startsWith(`<@${msg.client.user.id}>`)) return
+
+        //let prefix_stripped = msg.content.substring(self.prefix.length)
+        let prefix_stripped = msg.content.split(" ").slice(1).join(" ")
         let message_parts = prefix_stripped.split(" ")
         let trigger_word = message_parts[0].toLowerCase()
         let args = message_parts.splice(1)
