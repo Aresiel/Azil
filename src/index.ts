@@ -2,7 +2,7 @@ import { GatewayIntentBits, Client, Events } from "discord.js"
 import { token, prefix } from "./config.js"
 import { CommandHandler } from "./CommandHandler.js"
 import { MeowCommand } from "./commands/MeowCommand.js"
-import { MeowGPTCommand } from "./commands/MeowGPTCommand.js"
+import { MeowGPTPlusCommand } from "./commands/MeowGPTPlusCommand.js"
 import { SayCommand } from "./commands/SayCommand.js"
 import { BingTranslateCommand } from "./commands/BingTranslateCommand.js"
 import { GoogleTranslateCommand } from "./commands/GoogleTranslateCommand.js"
@@ -31,7 +31,7 @@ client.on(Events.ClientReady, readyClient => {
 
 let command_handler = new CommandHandler(prefix, [
     new MeowCommand,
-    new MeowGPTCommand,
+    new MeowGPTPlusCommand,
     new SayCommand,
     new GoogleTranslateCommand,
     new CatifyCommand,
