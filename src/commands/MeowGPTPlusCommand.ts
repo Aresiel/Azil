@@ -16,7 +16,8 @@ class MeowGPTPlusCommand extends Command {
         "explain",
         "describe",
         "tell",
-        "summarize"
+        "summarize",
+        "are"
     ];
 
     override name = "MeowGPTPlus"
