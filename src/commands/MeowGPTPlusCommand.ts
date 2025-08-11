@@ -42,6 +42,7 @@ class MeowGPTPlusCommand extends Command {
         const user_message = msg.member?.displayName + ": " + msg.content;
 
         const typer = setInterval(() => msg.channel.sendTyping(), 8000)
+        setTimeout(() => clearInterval(typer), 20000)
         msg.channel.sendTyping()
 
         const messages = [
