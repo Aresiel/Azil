@@ -10,6 +10,7 @@ import { CatifyCommand } from "./commands/CatifyCommand.js"
 import { WeatherCommand } from "./commands/WeatherCommand.js"
 import { FauxHelpCommand } from "./commands/FauxHelpCommand.js"
 import {DeleteThatCommand} from "./commands/DeleteThatCommand.js";
+import {MeowGPTCommand} from "./commands/MeowGPTCommand.js";
 
 const client  = new Client({
     intents: [
@@ -32,7 +33,8 @@ client.on(Events.ClientReady, readyClient => {
 
 let command_handler = new CommandHandler(prefix, [
     new MeowCommand,
-    new MeowGPTPlusCommand,
+    //new MeowGPTPlusCommand,
+    new MeowGPTCommand,
     new SayCommand,
     new GoogleTranslateCommand,
     new CatifyCommand,

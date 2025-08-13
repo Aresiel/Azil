@@ -2,11 +2,25 @@ import { Message } from "discord.js";
 import { Command } from "../Command.js";
 
 class MeowGPTCommand extends Command {
-    override trigger_words = ["what", "how", "why", "where", "when", "who", "is"];
+    override trigger_words = [ // List of verbs not used for other commands
+        "what",
+        "how",
+        "why",
+        "where",
+        "when",
+        "who",
+        "is",
+        "explain",
+        "describe",
+        "tell",
+        "summarize",
+        "are",
+        "should"
+    ];
     override name = "MeowGPT"
     
     override async execute(msg: Message<boolean>, trigger_word: string, args: string[]) {
-        if(!msg.content.includes("?")) return
+        //if(!msg.content.includes("?")) return
         await msg.reply(this.meowGPTReponse())
     }
 
