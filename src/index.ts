@@ -33,8 +33,8 @@ client.on(Events.ClientReady, readyClient => {
 
 let command_handler = new CommandHandler(prefix, [
     new MeowCommand,
-    //new MeowGPTPlusCommand,
-    new MeowGPTCommand,
+    new MeowGPTPlusCommand,
+    //new MeowGPTCommand,
     new SayCommand,
     new GoogleTranslateCommand,
     new CatifyCommand,
